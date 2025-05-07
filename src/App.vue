@@ -1,7 +1,7 @@
 <template>
   <div>
     <TreeItem v-for="(item, index) in treeData" :key="index" :item="item" />
-    <TableComponent :columns="columns" :data="tableData" />
+    <TableComponent :columns="columns" :data="tableData" class="table"/>
   </div>
 </template>
 
@@ -70,3 +70,9 @@ const tableData = [
   }
 ];
 </script>
+
+<style scoped>
+.table{
+  margin-top: 100px;
+}
+</style>
