@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>camera</title>
+  </head>
+  <body>
+    <div class="vid">
+      <video id="video" autoplay></video>
+      <div class="snapArea">
+        <button id="snap"></button>
+        <button id="download" title="">Download</button>
+
+        <canvas id="canvas" width="2000" height="1500"></canvas>
+      </div>
+    </div>
+    <style>
+      .vid {
+        background: black;
+        padding: 20px 10px;
+        margin: 0 auto;
+        width: 700px;
+        height: 620px;
+        margin: 0 auto;
+      }
+      video {
+        display: block;
+        margin: 0 auto;
+        /* padding: 15px; */
+        border: 2px solid;
+        border-radius: 15px;
+        width: 650px;
+        height: 490px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+      .snapArea {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: auto;
+        height: 100px;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      canvas {
+        position: absolute;
+        top: 20px;
+        left: 25px;
+        border-radius: 5px;
+        width: 80px;
+        height: 60px;
+      }
+      #snap {
+        width: 60px;
+        height: 60px;
+        border-radius: 200px;
+      }
+      #snap:active {
+        background-color: dimgray;
+        transform: scale(0.95);
+        box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3);
+      }
+      #download {
+        position: absolute;
+        right: 25px;
+      }
+    </style>
+
+    <script>
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("canvas");
+      const snap = document.getElementById("snap");
+      const context = canvas.getContext("2d");
+      const download = document.getElementById("download");
+
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          video.srcObject = stream;
+        })
+        .catch((err) => {
+          console.error("Kamera ishlamadi", err);
+        });
+
+      context.fillStyle = "white";
+      context.font = "300px Arial";
+      context.fillText("Rasm yo'q", 5, 350);
+
+      snap.addEventListener("click", () => {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      });
+
+      download.addEventListener("click", () => {
+        const image = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = image;
+        link.download = "snapshot.png";
+        link.click();
+      });
+    </script>
+  </body>
+</html>
